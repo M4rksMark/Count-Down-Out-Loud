@@ -1,0 +1,15 @@
+body{
+    background-color: lightcyan; 
+  }
+label, button{
+    display: block;
+    margin: 6px auto 6px auto;
+    min-width: 300px;
+  }
+#seconds{
+    min-width: 290px;
+    min-height: 2em;
+    text-align: center;
+}
+
+

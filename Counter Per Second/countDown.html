@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <link rel="stylesheet" href="countDown.css" />
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer with Speech</title>
+  </head>
+  <main style="text-align:center">
+  <body>
+    <h1>Countdown Timer with Speech</h1>
+    <label for="seconds">What Time Would You Like to Count Down From? :</label>
+    <input type="number" id="seconds" min="1" step="1">
+    <button id="startButton">Start Countdown</button>
+    <button id="pauseButton" disabled>Pause</button>
+    <button id="playButton" disabled>Play</button>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const startButton = document.getElementById('startButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const playButton = document.getElementById('playButton');
+        const secondsInput = document.getElementById('seconds');
+        let countdownInterval;
+        let secondsRemaining;
+        let isPaused = false;
+
+        startButton.addEventListener('click', () => {
+          const seconds = parseInt(secondsInput.value, 10);
+    
+        if (isNaN(seconds) || seconds <= 0) {
+          alert('Please enter a valid positive number of seconds.');
+          return;
+        }
+
+          startCountdown(seconds);
+        });
+
+        pauseButton.addEventListener('click', () => {
+          clearInterval(countdownInterval);
+          isPaused = true;
+          playButton.disabled = false;
+          pauseButton.disabled = true;
+        });
+
+          playButton.addEventListener('click', () => {
+            isPaused = false;
+            startCountdown(secondsRemaining);
+            playButton.disabled = true;
+            pauseButton.disabled = false;
+          });
+
+          function startCountdown(seconds) {
+            secondsRemaining = seconds;
+
+          countdownInterval = setInterval(() => {
+            if (secondsRemaining === 0) {
+              clearInterval(countdownInterval);
+              speak('Countdown finished.');
+              pauseButton.disabled = true;
+              playButton.disabled = true;
+            } else if (!isPaused) {
+              speak(secondsRemaining);
+              secondsRemaining--;
+            }
+          }, 1000);
+
+            pauseButton.disabled = false;
+            playButton.disabled = true;
+          }
+
+            function speak(message) {
+            const speechSynthesis = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = String(message);
+            speechSynthesis.speak(utterance);
+            }
+          });
+      </script>
+  </body>
+  </main>
+</html>
